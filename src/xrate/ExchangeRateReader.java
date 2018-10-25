@@ -20,6 +20,9 @@ public class ExchangeRateReader {
      * @param baseURL
      *            the base URL for requests
      */
+
+    String globalURL;
+
     public ExchangeRateReader(String baseURL) {
         // TODO Your code here
         /*
@@ -28,6 +31,9 @@ public class ExchangeRateReader {
          * the two methods below. All you need to do here is store the
          * provided `baseURL` in a field so it will be accessible later.
          */
+        //"facultypages.morris.umn.edu"
+        globalURL = baseURL;
+
     }
 
     /**
@@ -47,6 +53,12 @@ public class ExchangeRateReader {
      */
     public float getExchangeRate(String currencyCode, int year, int month, int day) throws IOException {
         // TODO Your code here
+
+        globalURL = globalURL + Integer.toString(year) +
+
+        InputStream inputStream = globalURL.openStream();
+        JsonObject urlInfo = JsonParser().parse(inputStream).getAsJsonObjects();
+
         throw new UnsupportedOperationException();
     }
 
@@ -72,5 +84,10 @@ public class ExchangeRateReader {
             int year, int month, int day) throws IOException {
         // TODO Your code here
         throw new UnsupportedOperationException();
+    }
+
+    public float getRate(JsonObject ratesInfo, String currency)
+    {
+        return ratesInfo.get("rates").get(currency);
     }
 }
