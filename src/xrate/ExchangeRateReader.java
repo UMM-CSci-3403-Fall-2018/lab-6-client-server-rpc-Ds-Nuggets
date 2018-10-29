@@ -1,6 +1,14 @@
 package xrate;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 /**
  * Provide access to basic currency exchange rate services.
@@ -21,9 +29,9 @@ public class ExchangeRateReader {
      *            the base URL for requests
      */
 
-    String globalURL;
+    URL globalURL;
 
-    public ExchangeRateReader(String baseURL) {
+    public ExchangeRateReader(String baseURL) throws MalformedURLException {
         // TODO Your code here
         /*
          * DON'T DO MUCH HERE!
@@ -32,7 +40,7 @@ public class ExchangeRateReader {
          * provided `baseURL` in a field so it will be accessible later.
          */
         //"facultypages.morris.umn.edu"
-        globalURL = baseURL;
+        globalURL = new URL(baseURL);
 
     }
 
@@ -51,15 +59,20 @@ public class ExchangeRateReader {
      * @return the desired exchange rate
      * @throws IOException
      */
-    public float getExchangeRate(String currencyCode, int year, int month, int day) throws IOException {
+    public float getExchangeRate(String currencyCode, int year, int month, int day) throws IOException, UnsupportedOperationException {
         // TODO Your code here
 
-        globalURL = globalURL + Integer.toString(year) +
+        //
 
         InputStream inputStream = globalURL.openStream();
-        JsonObject urlInfo = JsonParser().parse(inputStream).getAsJsonObjects();
 
-        throw new UnsupportedOperationException();
+        Reader readme = new InputStreamReader(inputStream);
+
+        JsonObject urlInfo = new JsonParser().parse(readme).getAsJsonObject();
+
+        //Return dummy object
+        return 0;
+
     }
 
     /**
