@@ -1,5 +1,6 @@
 package xrate;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -15,7 +16,8 @@ import java.net.URL;
  * 
  * @author PUT YOUR TEAM NAME HERE
  */
-public class ExchangeRateReader {
+public class ExchangeRateReader
+{
 
     /**
      * Construct an exchange rate reader using the given base URL. All requests
@@ -31,7 +33,8 @@ public class ExchangeRateReader {
 
     URL globalURL;
 
-    public ExchangeRateReader(String baseURL) throws MalformedURLException {
+    public ExchangeRateReader(String baseURL) throws MalformedURLException
+    {
         // TODO Your code here
         /*
          * DON'T DO MUCH HERE!
@@ -59,10 +62,11 @@ public class ExchangeRateReader {
      * @return the desired exchange rate
      * @throws IOException
      */
-    public float getExchangeRate(String currencyCode, int year, int month, int day) throws IOException, UnsupportedOperationException {
+    public float getExchangeRate(String currencyCode, int year, int month, int day) throws IOException, UnsupportedOperationException
+    {
         // TODO Your code here
 
-        //
+        globalURL = new URL(globalURL.toString() + "-" + year + "-" + safeDate(month) + "-" + safeDate(day) + "?access=");
 
         InputStream inputStream = globalURL.openStream();
 
@@ -92,15 +96,35 @@ public class ExchangeRateReader {
      * @return the desired exchange rate
      * @throws IOException
      */
-    public float getExchangeRate(
-            String fromCurrency, String toCurrency,
-            int year, int month, int day) throws IOException {
+    public float getExchangeRate(String fromCurrency, String toCurrency, int year, int month, int day) throws IOException, UnsupportedOperationException
+    {
         // TODO Your code here
-        throw new UnsupportedOperationException();
+
     }
 
-    public float getRate(JsonObject ratesInfo, String currency)
+    public float getRate(JsonObject ratesInfo, String country_code)
     {
-        return ratesInfo.get("rates").get(currency);
+
+        JsonObject crates = ratesInfo.getAsJsonObject("rates");
+
+        return ratesInfo.getAsJsonObject("rates").get(country_code).getAsFloat();
+
+        //return crates.get(country_code).getAsFloat();
+
+
+
+    }
+
+    public String safeDate(int num)
+    {
+        if(num < 10)
+        {
+            return "0" + Integer.toString(num);
+        }
+
+        else
+        {
+            return Integer.toString(num);
+        }
     }
 }
